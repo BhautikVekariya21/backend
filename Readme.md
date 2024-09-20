@@ -1,3 +1,2 @@
-#backend
-
-backend with express,node and mongodb with js
+# backend
+backend with express.js node.js and MongDB
