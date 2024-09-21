@@ -1,14 +1,29 @@
-// require('dotenv').config({path:'./env'})
-import dotenv from "dotenv"
-import mongoose from "mongoose";
-import { DB_NAME } from "./constants.js";
+import dotenv from "dotenv";
 import express from "express";
 import connection from "./db/index.js";
-const app = express();
 
+// Load environment variables from the `.env` file
 dotenv.config({
-    path:'./env'
-})
+  path: './env',
+});
+
+const app = express();
+const PORT = process.env.PORT || 8000;
+
+// Connect to the database
+connection();
+
+// Handle express app errors
+app.on("error", (error) => {
+  console.error("Express app error:", error);
+  throw error;
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+});
+
 
 // ;(async () => {
 //   try {
