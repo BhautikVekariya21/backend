@@ -6,3 +6,5 @@ class ApiResponse {
         this.success=startusCode < 400
     }
 }
+
+export default ApiResponse;
