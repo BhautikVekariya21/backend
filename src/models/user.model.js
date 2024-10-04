@@ -112,4 +112,28 @@ userSchema.methods.generateAccessToken = function () {
   }
 };
 
+// Method to generate JWT refresh token
+
+userSchema.methods.generateRefreshToken = function () {
+  try {
+    console.log("Generating refresh token...");
+
+    const token = jwt.sign(
+      {
+        _id: this._id,
+      },
+      process.env.REFRESH_TOKEN_SECRET, // Secret key for signing the token
+      {
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRY, // Token expiry time
+      }
+    );
+
+    console.log("Refresh token generated successfully.");
+    return token;
+  } catch (error) {
+    console.error("Error generating refresh token:", error.message);
+    return null;
+  }
+};
+
 export default mongoose.model("User", userSchema);
