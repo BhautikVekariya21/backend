@@ -4,7 +4,7 @@ import connection from "./db/index.js";
 import {app} from './app.js'
 // Load environment variables from the `.env` file
 dotenv.config({
-  path: './.env',
+  path: './env',
 });
 
 const PORT = process.env.PORT || 5005; // Changed default port to 5005
