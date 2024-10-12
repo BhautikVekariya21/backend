@@ -38,7 +38,6 @@ You can view the schema diagram for the project using the link below:
 
 [View Schema Diagram on Eraser](https://app.eraser.io/workspace/yl7yZNg1c3BRbG4y1d0H?origin=share)
 
-
 ### Installation
 
 1. **Clone the repository**:
@@ -135,7 +134,6 @@ You can check out the backend playlist here:
 [Chai Aur Code - Backend Playlist](https://www.youtube.com/@chaiaurcode)
 
 Special thanks to the creator of the channel for providing valuable content to learn backend development!
-
 
 ## Contact
 
