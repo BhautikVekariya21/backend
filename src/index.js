@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import connection from "./db/index.js";
-import {app} from './app.js'
+import app from './app.js'
 // Load environment variables from the `.env` file
 dotenv.config({
   path: './env',

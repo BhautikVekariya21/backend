@@ -7,7 +7,7 @@ const SubscriptionSchema = new Schema({
     },
     channel:{
         type:Schema.Types.ObjectId, // the channel to which this subscription belongs
-        ref:"Channel"
+        ref:"User"
     }
 },{
     timestamps:true, // automatically adds createdAt and updatedAt fields to the schema

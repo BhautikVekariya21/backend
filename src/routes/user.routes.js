@@ -5,7 +5,20 @@ import cloudinary from "cloudinary"; // Import Cloudinary
 import { verifyJWT } from "../middlewares/auth.middleware.js"; // Ensure JWT middleware is correctly imported
 import userController from "../controllers/user.controller.js"; // Correct import for default exports
 
-const { registerUser, loginUser, logoutUser,refreshAccessToken } = userController; // Destructure the needed functions
+const { 
+    registerUser, 
+    loginUser, 
+    logoutUser,
+    refreshAccessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
+    getUserChannelProfile,
+    getWatchHistory,
+
+} = userController; // Destructure the needed functions
 
 
 const router = Router();
@@ -66,5 +79,26 @@ router.route("/logout").post(verifyJWT, logoutUser); // Logout route protected w
 
 // Define route for user refreshing JWT (requires authentication via JWT)
 router.route("/refresh-token").post(refreshAccessToken); // POST request to refresh
+
+// Define route for change password user details (requires authentication via JWT)
+router.route("/change-password").post(verifyJWT, changeCurrentPassword); // POST request to change password
+
+// Define route for getting current user details (requires authentication via JWT)
+router.route("/current-user").get(verifyJWT, getCurrentUser); // GET request to get current user details
+
+// Definr route for update account details (requires authentication via JWT)
+router.route("/update-account").patch(verifyJWT,updateAccountDetails); // PATCH request to update account
+
+// Define route for updating user avatar (requires authentication via JWT)
+router.route("/avatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar); // POST request to update avatar
+
+// Define route for updating user cover image (requires authentication via JWT)
+router.route("/cover-image").patch(verifyJWT, upload.single("coverImage"), updateUserCoverImage); // POST request to update cover image
+
+// Define route for getting user channel profile (requires authentication via JWT)
+router.route("/c/:username").get(verifyJWT, getUserChannelProfile); // GET request to get user channel profile
+
+// Define route for getting user watch history (requires authentication via JWT)
+router.route("/history").get(verifyJWT, getWatchHistory); // GET request to get user watch history
 
 export default router;
