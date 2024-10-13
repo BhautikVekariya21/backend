@@ -1,5 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import dotenv from "dotenv";
+
+dotenv.config(); // Load environment variables from the.env file
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -35,9 +38,12 @@ const deleteOnCloudinary = async (public_id, resource_type="image") => {
         const result = await cloudinary.uploader.destroy(public_id, {
             resource_type: `${resource_type}`
         });
+        console.log("file deleted from cloudinary", public_id);
+
+
     } catch (error) {
-        return error;
-        console.log("delete on cloudinary failed", error);
+        console.log(" error deleting file from cloudinary", error);
+        return null;
     }
 };
 

@@ -1,6 +1,6 @@
 import asyncHandler from "../utils/asyncHandler.js";  
 import User from "../models/user.model.js"; 
-import {uploadOnCloudinary} from "../utils/cloudinary.js"; 
+import {uploadOnCloudinary,deleteOnCloudinary} from "../utils/cloudinary.js"; 
 import ApiResponse from "../utils/ApiResponse.js"; 
 import jwt from "jsonwebtoken";
 import ApiError from "../utils/apiError.js"; // Change to the correct case
@@ -74,7 +74,7 @@ const registerUser = asyncHandler(async (req, res) => {
     let coverImageLocalPath;
 
     if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        coverImageLocalPath = req.files.coverImage[0].path;
+        coverImageLocalPath = req.files.coverImage[0]?.path;
     }
 
     // Step 5: Ensure the avatar is provided, otherwise throw an error
@@ -91,26 +91,36 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Step 7: Create a new user in the database
-    const user = await User.create({
-        fullName,
-        avatar: avatar.url,
-        coverImage: coverImage?.url || "",
-        email,
-        password,
-        username: username.toLowerCase()
-    });
+    try {
+        const user = await User.create({
+            fullName,
+            avatar: avatar.url,
+            coverImage: coverImage?.url || "",
+            email,
+            password,
+            username: username.toLowerCase()
+        });
+    
+        // Step 8: Fetch the created user, excluding sensitive fields
+        const createdUser = await User.findById(user._id).select("-password -refreshToken");
+    
+        if (!createdUser) {
+            throw new ApiError(500, "Something went wrong while registering the user");
+        }
+    
+        // Step 9: Return a success response
+        return res.status(201).json(
+            new ApiResponse(200, createdUser, "User registered Successfully")
+        );
+    } catch (error) {
+        console.log(" User registration failed");
 
-    // Step 8: Fetch the created user, excluding sensitive fields
-    const createdUser = await User.findById(user._id).select("-password -refreshToken");
+        // Delete uploaded files from Cloudinary
+        await deleteOnCloudinary(avatar.public_id);
+        await deleteOnCloudinary(coverImage?.public_id);
 
-    if (!createdUser) {
         throw new ApiError(500, "Something went wrong while registering the user");
     }
-
-    // Step 9: Return a success response
-    return res.status(201).json(
-        new ApiResponse(200, createdUser, "User registered Successfully")
-    );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
