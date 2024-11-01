@@ -1,0 +1,8 @@
+# Ignore node_modules folder (use volumes to persist them)
+node_modules
+npm-debug.log
+.env          # Exclude the .env file to keep sensitive information secure
+Dockerfile
+docker-compose.yml
+.git
+.gitignore

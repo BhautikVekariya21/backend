@@ -1,0 +1,19 @@
+version: '3.8'  # You can specify a version, but this line is optional in the latest versions
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backend:latest  # Tagging the image as "backend" with the "latest" tag
+    container_name: backend
+    ports:
+      - "${PORT}:${PORT}"  # Map the port from the .env file
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - MONGODB_URI=${MONGODB_URI}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
